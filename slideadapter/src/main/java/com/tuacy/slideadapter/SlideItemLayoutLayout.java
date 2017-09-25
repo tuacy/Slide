@@ -3,28 +3,27 @@ package com.tuacy.slideadapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.HorizontalScrollView;
 
 
-public class SlideItemLayout extends HorizontalScrollView implements SlideItemAction {
+public class SlideItemLayoutLayout extends HorizontalScrollView implements SlideItemLayoutAction {
 
 	private int     mLeftWidth;
 	private int     mRightWidth;
 	private boolean mIsOpen;
 
-	public SlideItemLayout(Context context) {
+	public SlideItemLayoutLayout(Context context) {
 		this(context, null);
 	}
 
-	public SlideItemLayout(Context context, AttributeSet attrs) {
+	public SlideItemLayoutLayout(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public SlideItemLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+	public SlideItemLayoutLayout(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		setOverScrollMode(View.OVER_SCROLL_NEVER);
 		setHorizontalScrollBarEnabled(false);
@@ -34,6 +33,25 @@ public class SlideItemLayout extends HorizontalScrollView implements SlideItemAc
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		super.onLayout(changed, l, t, r, b);
 		scrollTo(mLeftWidth, 0);
+	}
+
+	@Override
+	public void computeScroll() {
+		super.computeScroll();
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (getSlideAdapter().getOpenSlideItem() != null && getSlideAdapter().getOpenSlideItem() != this) {
+			closeOpenMenu();
+//			return true;
+		}
+		return super.dispatchTouchEvent(ev);
+	}
+
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		return super.onInterceptTouchEvent(ev);
 	}
 
 	@Override
@@ -54,7 +72,7 @@ public class SlideItemLayout extends HorizontalScrollView implements SlideItemAc
 					openLeftMenu();
 				}
 				if (scrollX >= mLeftWidth / 2 && scrollX <= mLeftWidth + mRightWidth / 2) {
-					close();
+					closeMenu();
 				}
 				if (scrollX > mLeftWidth + mRightWidth / 2) {
 					openRightMenu();
@@ -65,7 +83,7 @@ public class SlideItemLayout extends HorizontalScrollView implements SlideItemAc
 	}
 
 	@Override
-	public boolean isOpen() {
+	public boolean isMenuOpen() {
 		return mIsOpen;
 	}
 
@@ -78,8 +96,8 @@ public class SlideItemLayout extends HorizontalScrollView implements SlideItemAc
 	public void openLeftMenu() {
 		mIsOpen = true;
 		this.smoothScrollTo(0, 0);
-		if (getAdapter() != null) {
-			getAdapter().setOpenItem(this);
+		if (getSlideAdapter() != null) {
+			getSlideAdapter().setOpenSlideItem(this);
 		}
 	}
 
@@ -92,19 +110,19 @@ public class SlideItemLayout extends HorizontalScrollView implements SlideItemAc
 	public void openRightMenu() {
 		mIsOpen = true;
 		this.smoothScrollBy(mRightWidth + mLeftWidth + mRightWidth, 0);
-		if (getAdapter() != null) {
-			getAdapter().setOpenItem(this);
+		if (getSlideAdapter() != null) {
+			getSlideAdapter().setOpenSlideItem(this);
 		}
 	}
 
 	@Override
-	public void close() {
+	public void closeMenu() {
 		mIsOpen = false;
 		this.smoothScrollTo(mLeftWidth, 0);
 	}
 
 	@Override
-	public SlideAdapterAction getAdapter() {
+	public SlideAdapterAction getSlideAdapter() {
 		View view = this;
 		while (true) {
 			view = (View) view.getParent();
@@ -126,21 +144,21 @@ public class SlideItemLayout extends HorizontalScrollView implements SlideItemAc
 	}
 
 	private void closeOpenMenu() {
-		if (!isOpen() && getAdapter() != null) {
-			getAdapter().closeOpenItem();
+		if (!isMenuOpen() && getSlideAdapter() != null) {
+			getSlideAdapter().closeOpenSlideItem();
 		}
 	}
 
-	private SlideItemAction getSlidingItem() {
-		if (getAdapter() != null) {
-			return getAdapter().getSlidingItem();
+	private SlideItemLayoutAction getSlidingItem() {
+		if (getSlideAdapter() != null) {
+			return getSlideAdapter().getActiveSlideItem();
 		}
 		return null;
 	}
 
-	private void setScrollingItem(SlideItemAction item) {
-		if (getAdapter() != null) {
-			getAdapter().setSlidingItem(item);
+	private void setScrollingItem(SlideItemLayoutAction item) {
+		if (getSlideAdapter() != null) {
+			getSlideAdapter().setActiveSlideItem(item);
 		}
 	}
 }

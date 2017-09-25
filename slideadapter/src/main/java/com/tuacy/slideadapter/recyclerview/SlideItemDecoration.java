@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 
-class SlideItemDecoration extends RecyclerView.ItemDecoration {
+public class SlideItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mItemPadding;
 

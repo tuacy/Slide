@@ -4,12 +4,12 @@ package com.tuacy.slideadapter.recyclerview;
  * 没有左右滑动的item(header footer)
  */
 
-public class ItemNormal {
+public class RecyclerItemNormal {
 
 	private int mLayoutId;
 	private int mLayoutHeight;
 
-	public ItemNormal(int layoutId, int layoutHeight) {
+	public RecyclerItemNormal(int layoutId, int layoutHeight) {
 		mLayoutId = layoutId;
 		mLayoutHeight = layoutHeight;
 	}

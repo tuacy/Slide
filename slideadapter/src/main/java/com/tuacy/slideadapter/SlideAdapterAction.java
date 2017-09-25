@@ -2,14 +2,37 @@ package com.tuacy.slideadapter;
 
 public interface SlideAdapterAction {
 
-	void setOpenItem(SlideItemAction item);
+	/**
+	 * 设置侧滑显示菜单的item
+	 *
+	 * @param item open item
+	 */
+	void setOpenSlideItem(SlideItemLayoutAction item);
 
-	SlideItemAction getOpenItem();
+	/**
+	 * 获取侧滑显示菜单的item
+	 *
+	 * @return open item
+	 */
+	SlideItemLayoutAction getOpenSlideItem();
 
-	void setSlidingItem(SlideItemAction item);
+	/**
+	 * 设置正在侧滑操作的item
+	 *
+	 * @param item active slide item
+	 */
+	void setActiveSlideItem(SlideItemLayoutAction item);
 
-	SlideItemAction getSlidingItem();
+	/**
+	 * 获取正在侧滑操作的item
+	 *
+	 * @return active slide item
+	 */
+	SlideItemLayoutAction getActiveSlideItem();
 
-	void closeOpenItem();
+	/**
+	 * 关闭侧滑显示的菜单item
+	 */
+	void closeOpenSlideItem();
 
 }

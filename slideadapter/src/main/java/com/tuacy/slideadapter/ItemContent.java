@@ -1,4 +1,4 @@
-package com.tuacy.slideadapter.recyclerview;
+package com.tuacy.slideadapter;
 
 /**
  * 有左右滑动

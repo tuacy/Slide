@@ -1,11 +1,11 @@
 package com.tuacy.slideadapter;
 
 
-public interface SlideItemAction {
+public interface SlideItemLayoutAction {
 
-	SlideAdapterAction getAdapter();
+	SlideAdapterAction getSlideAdapter();
 
-	boolean isOpen();
+	boolean isMenuOpen();
 
 	void setLeftMenuWidth(int width);
 
@@ -15,6 +15,6 @@ public interface SlideItemAction {
 
 	void openRightMenu();
 
-	void close();
+	void closeMenu();
 
 }

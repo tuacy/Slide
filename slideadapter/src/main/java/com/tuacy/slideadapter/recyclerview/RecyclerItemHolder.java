@@ -11,17 +11,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tuacy.slideadapter.ItemContent;
 import com.tuacy.slideadapter.R;
+import com.tuacy.slideadapter.SlideItemLayoutLayout;
 
 
-public class ItemHolder extends RecyclerView.ViewHolder {
+public class RecyclerItemHolder extends RecyclerView.ViewHolder {
 
 	private SparseArray<View> mViews;
 	private View              mContent;
 	private View              mLeftMenu;
 	private View              mRightMenu;
 
-	private ItemHolder(View itemView, View content, View leftMenu, View rightMenu) {
+	private RecyclerItemHolder(View itemView, View content, View leftMenu, View rightMenu) {
 		super(itemView);
 		mContent = content;
 		mLeftMenu = leftMenu;
@@ -29,18 +31,18 @@ public class ItemHolder extends RecyclerView.ViewHolder {
 		mViews = new SparseArray<>();
 	}
 
-	public static ItemHolder create(@NonNull Context context, @NonNull ViewGroup parent, @NonNull ItemNormal normal) {
+	public static RecyclerItemHolder create(@NonNull Context context, @NonNull ViewGroup parent, @NonNull RecyclerItemNormal normal) {
 		return create(context, parent, new ItemContent(normal.getLayoutId(), 0, 0, 0, 0));
 	}
 
-	public static ItemHolder create(@NonNull Context context, @NonNull ViewGroup parent, @NonNull final ItemContent slide) {
+	public static RecyclerItemHolder create(@NonNull Context context, @NonNull ViewGroup parent, @NonNull final ItemContent slide) {
 		final View itemView = LayoutInflater.from(context).inflate(R.layout.item_slide_content, parent, false);
 		LinearLayout linearLayout = (LinearLayout) itemView.findViewById(R.id.layout_slide_item_content);
 		View leftView = null;
 		View rightView = null;
 		if (slide.getLeftLayoutId() != 0) {
 			leftView = LayoutInflater.from(context).inflate(slide.getLeftLayoutId(), linearLayout, false);
-			linearLayout.addView(linearLayout);
+			linearLayout.addView(leftView);
 		}
 		if (slide.getContentLayoutId() == 0) {
 			throw new NullPointerException("please set the content view layout id");
@@ -51,7 +53,7 @@ public class ItemHolder extends RecyclerView.ViewHolder {
 			rightView = LayoutInflater.from(context).inflate(slide.getRightLayoutId(), linearLayout, false);
 			linearLayout.addView(rightView);
 		}
-		return new ItemHolder(itemView, contentView, leftView, rightView);
+		return new RecyclerItemHolder(itemView, contentView, leftView, rightView);
 	}
 
 	public View getContentView() {
@@ -75,11 +77,16 @@ public class ItemHolder extends RecyclerView.ViewHolder {
 		return (T) view;
 	}
 
-	public ItemHolder setText(int viewId, String text) {
+	public RecyclerItemHolder setText(int viewId, String text) {
 		TextView textView = getView(viewId);
 		if (textView != null) {
 			textView.setText(text);
 		}
+		return this;
+	}
+
+	public RecyclerItemHolder closeMenu() {
+		((SlideItemLayoutLayout) getView(R.id.slide_item_parent)).getSlideAdapter().closeOpenSlideItem();
 		return this;
 	}
 }
